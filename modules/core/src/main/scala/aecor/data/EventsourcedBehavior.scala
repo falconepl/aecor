@@ -31,6 +31,12 @@ object EventsourcedBehavior extends EventsourcedBehaviourIntances {
     fold: Fold[Folded, S, E]
   ): EventsourcedBehavior[EitherK[M, R, *[_]], F, S, E] =
     EventsourcedBehavior[EitherK[M, R, *[_]], F, S, E](EitherK(actions), fold)
+
+  def rejectableExt[M[_[_], _], F[_], S, E, R, D](
+    actions: M[EitherT[ActionT[F, S, E, *], R, *], D],
+    fold: Fold[Folded, S, E]
+  ): EventsourcedBehavior[EitherK[M[*[_], D], R, *[_]], F, S, E] =
+    EventsourcedBehavior[EitherK[M[*[_], D], R, *[_]], F, S, E](EitherK.from(actions), fold)
 }
 
 trait EventsourcedBehaviourIntances {

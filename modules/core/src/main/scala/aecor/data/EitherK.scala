@@ -27,6 +27,9 @@ final case class EitherK[M[_[_]], A, F[_]](value: M[EitherT[F, A, *]]) extends A
 }
 
 object EitherK {
+  def from[M[_[_], _], F[_], A, D](value: M[EitherT[F, A, *], D]): EitherK[M[*[_], D], A, F] =
+    new EitherK[λ[α[_] => M[α, D]], A, F](value)
+
   implicit def wireProtocol[M[_[_]]: FunctorK, A](
     implicit M: WireProtocol[M],
     aCodec: Codec[A]
